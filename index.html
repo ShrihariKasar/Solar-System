@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Solar System</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #000;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    #solarSystem {
+      width: 100%;
+      height: 80vh;
+      display: block;
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      transform: none;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      text-align: left;
+      width: 250px;
+    }
+
+    .controls h2 {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .controls label {
+      display: block;
+      margin: 5px 0 2px;
+      font-size: 14px;
+    }
+
+    .controls input[type="range"] {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .controls button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .controls button:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div id="solarSystem"></div>
+
+  <div class="controls">
+    <h2>Planet Speed Controls</h2>
+    <div id="speedControls"></div>
+    <button id="toggleBtn">Pause</button>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

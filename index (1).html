@@ -1,84 +1,304 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3D Solar System</title>
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BATVA FASHION</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&amp;family=Outfit:wght@200;300;400;500&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        noir: '#0A0A0A',
+        gold: '#D4AF37',
+        goldLight: '#E8D48B',
+        ivory: '#F8F6F0',
+        warmGray: '#1A1A1A'
+      },
+      fontFamily: {
+        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+        sans: ['Outfit', 'Helvetica', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #000;
-      color: #fff;
-      overflow: hidden;
-    }
-
-    #solarSystem {
-      width: 100%;
-      height: 80vh;
-      display: block;
-    }
-
-    .controls {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      transform: none;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-      text-align: left;
-      width: 250px;
-    }
-
-    .controls h2 {
-      margin-bottom: 10px;
-      font-size: 18px;
-    }
-
-    .controls label {
-      display: block;
-      margin: 5px 0 2px;
-      font-size: 14px;
-    }
-
-    .controls input[type="range"] {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-
-    .controls button {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      background-color: #333;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .controls button:hover {
-      background-color: #555;
-    }
-  </style>
-</head>
-<body>
-  <div id="solarSystem"></div>
-
-  <div class="controls">
-    <h2>Planet Speed Controls</h2>
-    <div id="speedControls"></div>
-    <button id="toggleBtn">Pause</button>
+html, body { height: 100%; margin: 0; }
+* { box-sizing: border-box; }
+.fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+.product-img { transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.product-card:hover .product-img { transform: scale(1.05); }
+.wishlist-btn { transition: all 0.3s ease; }
+.wishlist-btn:hover { color: #D4AF37; }
+.scroll-hide::-webkit-scrollbar { display: none; }
+.scroll-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.banner-img { transition: transform 8s ease; }
+.banner-wrap:hover .banner-img { transform: scale(1.04); }
+.gold-btn { transition: all 0.4s ease; }
+.gold-btn:hover { background: #D4AF37; color: #0A0A0A; }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.shimmer-gold { background: linear-gradient(90deg, #D4AF37 0%, #E8D48B 50%, #D4AF37 100%); background-size: 200% 100%; animation: shimmer 3s infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.nav-sticky { transition: background 0.3s ease, box-shadow 0.3s ease; }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-white font-sans text-noir overflow-auto">
+  <div id="app" class="w-full"><!-- Announcement Bar -->
+   <div id="announcement-bar" class="bg-noir py-2 px-4 text-center">
+    <p id="announcement-text" class="text-gold text-xs tracking-[0.3em] uppercase font-sans font-light">Luxury Clutch Collection – Shop Now</p>
+   </div><!-- Navbar -->
+   <nav id="navbar" class="nav-sticky sticky top-0 z-50 bg-white border-b border-gray-100">
+    <div class="flex items-center justify-between px-5 md:px-10 py-4">
+     <div class="flex items-center gap-5"><button class="wishlist-btn"><i data-lucide="menu" class="w-5 h-5"></i></button> <button class="wishlist-btn"><i data-lucide="search" class="w-5 h-5"></i></button>
+     </div>
+     <div class="text-center">
+      <h1 id="brand-name" class="font-serif text-xl md:text-2xl tracking-[0.35em] font-semibold uppercase">BATVA FASHION</h1>
+     </div>
+     <div class="flex items-center gap-5"><button class="wishlist-btn"><i data-lucide="heart" class="w-5 h-5"></i></button> <button class="wishlist-btn"><i data-lucide="user" class="w-5 h-5"></i></button>
+     </div>
+    </div>
+   </nav><!-- Category Scroll -->
+   <div class="scroll-hide overflow-x-auto border-b border-gray-100">
+    <div class="flex items-center gap-8 px-6 py-4 min-w-max mx-auto justify-center"><a href="#" class="flex flex-col items-center gap-1.5 group">
+      <div class="w-12 h-12 rounded-full bg-ivory flex items-center justify-center group-hover:bg-gold/10 transition-colors">
+       <span class="text-lg">👝</span>
+      </div><span class="text-[10px] tracking-[0.2em] uppercase font-light">Clutches</span> </a> <a href="#" class="flex flex-col items-center gap-1.5 group">
+      <div class="w-12 h-12 rounded-full bg-ivory flex items-center justify-center group-hover:bg-gold/10 transition-colors">
+       <span class="text-lg">💍</span>
+      </div><span class="text-[10px] tracking-[0.2em] uppercase font-light">Bridal</span> </a> <a href="#" class="flex flex-col items-center gap-1.5 group">
+      <div class="w-12 h-12 rounded-full bg-ivory flex items-center justify-center group-hover:bg-gold/10 transition-colors">
+       <span class="text-lg">✨</span>
+      </div><span class="text-[10px] tracking-[0.2em] uppercase font-light">Party Wear</span> </a> <a href="#" class="flex flex-col items-center gap-1.5 group">
+      <div class="w-12 h-12 rounded-full bg-ivory flex items-center justify-center group-hover:bg-gold/10 transition-colors">
+       <span class="text-lg">🪡</span>
+      </div><span class="text-[10px] tracking-[0.2em] uppercase font-light">Embroidered</span> </a> <a href="#" class="flex flex-col items-center gap-1.5 group">
+      <div class="w-12 h-12 rounded-full bg-ivory flex items-center justify-center group-hover:bg-gold/10 transition-colors">
+       <span class="text-lg">👑</span>
+      </div><span class="text-[10px] tracking-[0.2em] uppercase font-light">Premium</span> </a>
+    </div>
+   </div><!-- Hero Section -->
+   <section class="relative w-full overflow-hidden" style="height: 85%;">
+    <div class="absolute inset-0 bg-noir">
+     <div class="absolute inset-0" style="background: linear-gradient(135deg, #1a1510 0%, #0a0a0a 40%, #12100d 100%);"></div>
+     <div class="absolute inset-0 opacity-20" style="background: radial-gradient(ellipse at 30% 50%, #D4AF3722 0%, transparent 70%);"></div><!-- Decorative geometric pattern -->
+     <svg class="absolute right-0 top-0 w-1/2 h-full opacity-[0.03]" viewbox="0 0 400 600" fill="none"><pattern id="lux" width="40" height="40" patternunits="userSpaceOnUse">
+       <path d="M20 0L40 20L20 40L0 20Z" stroke="#D4AF37" stroke-width="0.5" fill="none" />
+      </pattern> <rect width="400" height="600" fill="url(#lux)" />
+     </svg>
+    </div>
+    <div class="relative h-full flex items-center px-8 md:px-20">
+     <div class="max-w-lg fade-in">
+      <p class="text-gold/70 text-xs tracking-[0.4em] uppercase mb-4 font-sans font-light">New Arrival 2025</p>
+      <h2 id="hero-title" class="font-serif text-5xl md:text-7xl text-white font-light leading-[1.1] mb-6">Luxury<br>
+       Clutches</h2>
+      <p id="hero-subtitle" class="text-white/50 font-light text-sm md:text-base leading-relaxed mb-10 max-w-sm">Handcrafted elegance for the modern woman. Each piece tells a story of timeless Indian artistry.</p><a href="#" class="gold-btn inline-block border border-gold text-gold px-10 py-3.5 text-xs tracking-[0.3em] uppercase font-sans font-light">Explore Collection</a>
+     </div>
+    </div>
+    <div class="absolute bottom-8 right-8 md:right-20 text-right">
+     <p class="text-white/20 text-[10px] tracking-[0.3em] uppercase">Scroll to discover</p>
+     <div class="w-px h-12 bg-gold/30 mx-auto mt-2"></div>
+    </div>
+   </section><!-- Section Title Component -->
+   <section class="py-20 px-6 md:px-16 fade-in">
+    <div class="text-center mb-14">
+     <p class="text-gold text-[10px] tracking-[0.5em] uppercase mb-3">Curated Selection</p>
+     <h3 class="font-serif text-3xl md:text-4xl font-light">Signature Clutches</h3>
+     <div class="w-12 h-px bg-gold mx-auto mt-5"></div>
+    </div><!-- Product Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto" id="product-grid-1"></div>
+    <div class="text-center mt-14"><a href="#" class="gold-btn inline-block border border-gold text-gold px-12 py-3.5 text-xs tracking-[0.3em] uppercase rounded-full font-light">View More</a>
+    </div>
+   </section><!-- Category Banner - Bridal -->
+   <section class="relative w-full overflow-hidden banner-wrap fade-in" style="height: 60%;">
+    <div class="banner-img absolute inset-0" style="background: linear-gradient(160deg, #1e1914 0%, #0a0a0a 50%, #1a150e 100%);"></div>
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 70% 40%, #D4AF3715 0%, transparent 60%);"></div>
+    <div class="relative h-full flex items-center justify-end px-8 md:px-20">
+     <div class="text-right max-w-md">
+      <p class="text-gold/60 text-[10px] tracking-[0.5em] uppercase mb-3">Editorial</p>
+      <h3 class="font-serif text-4xl md:text-6xl text-white font-light mb-4">Bridal<br>
+       Collection</h3>
+      <p class="text-white/40 text-sm font-light mb-8">Where heritage meets haute couture</p><a href="#" class="gold-btn inline-block border border-gold/50 text-gold px-10 py-3 text-xs tracking-[0.3em] uppercase font-light">Discover</a>
+     </div>
+    </div>
+   </section><!-- Bridal Products -->
+   <section class="py-20 px-6 md:px-16 fade-in">
+    <div class="text-center mb-14">
+     <p class="text-gold text-[10px] tracking-[0.5em] uppercase mb-3">Bridal Edit</p>
+     <h3 class="font-serif text-3xl md:text-4xl font-light">For The Bride</h3>
+     <div class="w-12 h-px bg-gold mx-auto mt-5"></div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto" id="product-grid-2"></div>
+    <div class="text-center mt-14"><a href="#" class="gold-btn inline-block border border-gold text-gold px-12 py-3.5 text-xs tracking-[0.3em] uppercase rounded-full font-light">View More</a>
+    </div>
+   </section><!-- Party Banner -->
+   <section class="relative w-full overflow-hidden banner-wrap fade-in" style="height: 50%;">
+    <div class="banner-img absolute inset-0" style="background: linear-gradient(200deg, #14110d 0%, #0a0a0a 60%, #1a1510 100%);"></div>
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 20% 60%, #D4AF3712 0%, transparent 50%);"></div>
+    <div class="relative h-full flex items-center px-8 md:px-20">
+     <div class="max-w-md">
+      <p class="text-gold/60 text-[10px] tracking-[0.5em] uppercase mb-3">After Dark</p>
+      <h3 class="font-serif text-4xl md:text-5xl text-white font-light mb-4">Party Wear</h3>
+      <p class="text-white/40 text-sm font-light mb-8">Make every entrance unforgettable</p><a href="#" class="gold-btn inline-block border border-gold/50 text-gold px-10 py-3 text-xs tracking-[0.3em] uppercase font-light">Shop Now</a>
+     </div>
+    </div>
+   </section><!-- Horizontal Carousel -->
+   <section class="py-20 fade-in">
+    <div class="text-center mb-14 px-6">
+     <p class="text-gold text-[10px] tracking-[0.5em] uppercase mb-3">Trending Now</p>
+     <h3 class="font-serif text-3xl md:text-4xl font-light">Party Essentials</h3>
+     <div class="w-12 h-px bg-gold mx-auto mt-5"></div>
+    </div>
+    <div class="scroll-hide overflow-x-auto px-6 md:px-16">
+     <div class="flex gap-5 min-w-max" id="carousel-1"></div>
+    </div>
+   </section><!-- Lifestyle Section -->
+   <section class="py-16 px-6 md:px-16 fade-in">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-6xl mx-auto">
+     <div class="relative overflow-hidden group" style="height: 400px;">
+      <div class="absolute inset-0 bg-gradient-to-br from-noir via-warmGray to-noir"></div>
+      <div class="absolute inset-0 opacity-10" style="background: radial-gradient(circle at 50% 50%, #D4AF37 0%, transparent 70%);"></div>
+      <div class="absolute bottom-8 left-8">
+       <p class="text-gold/50 text-[10px] tracking-[0.4em] uppercase mb-2">The Art of</p>
+       <h4 class="font-serif text-3xl text-white font-light">Craftsmanship</h4>
+      </div>
+     </div>
+     <div class="grid grid-rows-2 gap-4">
+      <div class="relative overflow-hidden group" style="height: 194px;">
+       <div class="absolute inset-0" style="background: linear-gradient(45deg, #1a1510, #0f0d0a);"></div>
+       <div class="absolute bottom-6 left-6">
+        <p class="text-gold/50 text-[10px] tracking-[0.4em] uppercase mb-1">Heritage</p>
+        <h4 class="font-serif text-xl text-white font-light">Indian Artistry</h4>
+       </div>
+      </div>
+      <div class="relative overflow-hidden group" style="height: 194px;">
+       <div class="absolute inset-0" style="background: linear-gradient(135deg, #14110d, #0a0a0a);"></div>
+       <div class="absolute bottom-6 left-6">
+        <p class="text-gold/50 text-[10px] tracking-[0.4em] uppercase mb-1">Luxury</p>
+        <h4 class="font-serif text-xl text-white font-light">Beyond Borders</h4>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Premium Collection -->
+   <section class="py-20 px-6 md:px-16 bg-ivory fade-in">
+    <div class="text-center mb-14">
+     <p class="shimmer-gold text-[10px] tracking-[0.5em] uppercase mb-3 font-sans">Exclusive</p>
+     <h3 class="font-serif text-3xl md:text-4xl font-light">Premium Collection</h3>
+     <div class="w-12 h-px bg-gold mx-auto mt-5"></div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto" id="product-grid-3"></div>
+    <div class="text-center mt-14"><a href="#" class="gold-btn inline-block border border-gold text-gold px-12 py-3.5 text-xs tracking-[0.3em] uppercase rounded-full font-light">View More</a>
+    </div>
+   </section><!-- Newsletter -->
+   <section class="py-20 px-6 bg-noir text-center fade-in">
+    <p class="text-gold/50 text-[10px] tracking-[0.5em] uppercase mb-3">Stay Connected</p>
+    <h3 class="font-serif text-3xl text-white font-light mb-3">Join The Circle</h3>
+    <p class="text-white/30 text-sm font-light mb-8 max-w-sm mx-auto">Be the first to know about new collections and exclusive offers.</p>
+    <form class="flex max-w-md mx-auto" onsubmit="event.preventDefault(); this.querySelector('input').value=''; this.querySelector('button').textContent='Subscribed ✓'; setTimeout(() => this.querySelector('button').textContent='Subscribe', 2000);"><input type="email" placeholder="Your email" class="flex-1 bg-transparent border border-white/10 px-5 py-3 text-white text-sm font-light focus:outline-none focus:border-gold/50 placeholder:text-white/20"> <button type="submit" class="bg-gold text-noir px-6 py-3 text-xs tracking-[0.2em] uppercase font-medium hover:bg-goldLight transition-colors">Subscribe</button>
+    </form>
+   </section><!-- Footer -->
+   <footer class="bg-noir border-t border-white/5 pt-16 pb-8 px-6 md:px-16">
+    <div class="max-w-6xl mx-auto">
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
+      <div>
+       <h5 class="font-serif text-white text-lg mb-5">BATVA</h5>
+       <p class="text-white/30 text-xs leading-relaxed font-light">Redefining Indian luxury, one clutch at a time.</p>
+      </div>
+      <div>
+       <p class="text-gold/60 text-[10px] tracking-[0.3em] uppercase mb-4">Shop</p>
+       <ul class="space-y-2.5">
+        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Clutches</a></li>
+        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Bridal</a></li>
+        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Party Wear</a></li>
+        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Premium</a></li>
+       </ul>
+      </div>
+      <div>
+       <p class="text-gold/60 text-[10px] tracking-[0.3em] uppercase mb-4">About</p>
+       <ul class="space-y-2.5">
+        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Our Story</a></li>
+        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Craftsmanship</a></li>
+        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Sustainability</a></li>
+       </ul>
+      </div>
+      <div>
+       <p class="text-gold/60 text-[10px] tracking-[0.3em] uppercase mb-4">Help</p>
+       <ul class="space-y-2.5">
+        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Contact</a></li>
+        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Shipping</a></li>
+        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Returns</a></li>
+        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Privacy Policy</a></li>
+       </ul>
+      </div>
+     </div>
+     <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-white/20 text-[10px] tracking-[0.2em] uppercase">© 2025 Batva Fashion. All Rights Reserved.</p>
+      <div class="flex gap-5"><a href="#" class="text-white/20 hover:text-gold transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a> <a href="#" class="text-white/20 hover:text-gold transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a> <a href="#" class="text-white/20 hover:text-gold transition-colors"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+      </div>
+     </div>
+    </div>
+   </footer>
   </div>
+  <script>
+// Product data
+const products = {
+  signature: [
+    { name: 'Maharani Gold Clutch', price: '₹12,999', color: '#2a2218' },
+    { name: 'Noir Velvet Pouch', price: '₹8,499', color: '#1a1a1a' },
+    { name: 'Zari Embroidered Box', price: '₹15,999', color: '#1e1814' },
+    { name: 'Pearl Drop Minaudière', price: '₹18,499', color: '#1c1916' },
+  ],
+  bridal: [
+    { name: 'Bridal Heirloom Clutch', price: '₹24,999', color: '#211c14' },
+    { name: 'Rose Gold Potli', price: '₹19,999', color: '#1e1610' },
+    { name: 'Ivory Sequin Frame', price: '₹22,499', color: '#1a1812' },
+    { name: 'Ruby Silk Envelope', price: '₹16,999', color: '#1c1210' },
+  ],
+  party: [
+    { name: 'Midnight Shimmer', price: '₹9,999', color: '#12121a' },
+    { name: 'Champagne Tassel', price: '₹11,499', color: '#1a1814' },
+    { name: 'Obsidian Cube', price: '₹13,999', color: '#0e0e0e' },
+    { name: 'Gilded Chain Sling', price: '₹10,499', color: '#1a1610' },
+    { name: 'Crystal Frost', price: '₹14,999', color: '#141418' },
+    { name: 'Deco Fan Clutch', price: '₹12,499', color: '#181410' },
+  ],
+  premium: [
+    { name: 'Heritage Kundan Box', price: '₹34,999', color: '#1e1a12' },
+    { name: 'Diamond Lattice Frame', price: '₹42,999', color: '#161616' },
+    { name: 'Emperor\'s Silk Pouch', price: '₹28,999', color: '#1a1410' },
+    { name: 'Platinum Weave Clutch', price: '₹38,499', color: '#141416' },
+  ]
+};
 
-  <script type="module" src="script.js"></script>
-</body>
-</html>
+function createProductCard(p, size = 'normal') {
+  const w = size === 'carousel' ? 'w-56' : 'w-full';
+  const h = size === 'carousel' ? 'h-64' : 'h-52 md:h-72';
+  return `
+    <div class="product-card group ${w} flex-shrink-0">
+      <div class="relative overflow-hidden ${h} mb-3">
+        <div class="product-img absolute inset-0" style="background: linear-gradient(145deg, ${p.color}, #0a0a0a);"></div>
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="background: radial-gradient(circle at 50% 40%, #D4AF3710 0%, transparent 60%);"></div>
+        <button class="wishlist-btn absolute top-3 right-3 text-white/30 hover:text-gold z-10">
+          <i data-lucide="heart" class="w-4 h-4"></i>
+        </button>
+        <div class="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span class="text-[9px] text-gold/50 tracking-[0.3em] uppercase">Quick View</span>
+        </div>
+      </div>
+      <h4 class="font-serif text-sm md:text-base font-light tracking-wide">${p.name}</h4>
+      <p class="text-xs text-noir/50 mt-1 font-light">${p.price}</p>
+    </div>`;
+}
+
+function renderProducts() {
+  document.getElementById('product-grid-1').innerHTML = products.signature.map(p => createProductCard(p)).join('');
+  document.getElementById('product-grid-2').innerHTML = products.bridal.map(p => createProductCard(p)).join('');
+  document.getElementById('carousel-1').innerHTML = products.party.map(p => createProductCard(p, 'carousel')).join('');
+  document.ge

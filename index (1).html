@@ -3,25 +3,25 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BATVA FASHION</title>
+  <title>IJIRT - International Journal of Innovative Research and Technology</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <script src="/_sdk/element_sdk.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&amp;family=Outfit:wght@200;300;400;500&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600;8..60,700&amp;family=DM+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
   <script>
 tailwind.config = {
   theme: {
     extend: {
       colors: {
-        noir: '#0A0A0A',
-        gold: '#D4AF37',
-        goldLight: '#E8D48B',
-        ivory: '#F8F6F0',
-        warmGray: '#1A1A1A'
+        brand: '#C62828',
+        'brand-dark': '#8E0000',
+        'brand-light': '#FF5F52',
+        surface: '#F8F7F5',
+        'surface-alt': '#FFFFFF',
       },
       fontFamily: {
-        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-        sans: ['Outfit', 'Helvetica', 'sans-serif']
+        serif: ['Source Serif 4', 'Georgia', 'serif'],
+        sans: ['DM Sans', 'system-ui', 'sans-serif'],
       }
     }
   }
@@ -29,276 +29,571 @@ tailwind.config = {
 </script>
   <style>
 html, body { height: 100%; margin: 0; }
-* { box-sizing: border-box; }
-.fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
-.fade-in.visible { opacity: 1; transform: translateY(0); }
-.product-img { transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-.product-card:hover .product-img { transform: scale(1.05); }
-.wishlist-btn { transition: all 0.3s ease; }
-.wishlist-btn:hover { color: #D4AF37; }
-.scroll-hide::-webkit-scrollbar { display: none; }
-.scroll-hide { -ms-overflow-style: none; scrollbar-width: none; }
-.banner-img { transition: transform 8s ease; }
-.banner-wrap:hover .banner-img { transform: scale(1.04); }
-.gold-btn { transition: all 0.4s ease; }
-.gold-btn:hover { background: #D4AF37; color: #0A0A0A; }
-@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-.shimmer-gold { background: linear-gradient(90deg, #D4AF37 0%, #E8D48B 50%, #D4AF37 100%); background-size: 200% 100%; animation: shimmer 3s infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.nav-sticky { transition: background 0.3s ease, box-shadow 0.3s ease; }
+.scroll-wrap { height: 100%; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
+.glass { background: rgba(255,255,255,0.72); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,0.5); }
+.glass-dark { background: rgba(198,40,40,0.06); backdrop-filter: blur(12px); border: 1px solid rgba(198,40,40,0.08); }
+@keyframes fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+@keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-10px); } }
+.anim-up { animation: fadeUp .7s ease both; }
+.anim-up-d1 { animation: fadeUp .7s .1s ease both; }
+.anim-up-d2 { animation: fadeUp .7s .2s ease both; }
+.anim-up-d3 { animation: fadeUp .7s .3s ease both; }
+.anim-up-d4 { animation: fadeUp .7s .4s ease both; }
+.anim-float { animation: float 5s ease-in-out infinite; }
+.card-hover { transition: transform .3s ease, box-shadow .3s ease; }
+.card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(198,40,40,0.10); }
+.nav-link { position: relative; }
+.nav-link::after { content:''; position:absolute; bottom:-2px; left:50%; width:0; height:2px; background:#C62828; transition:all .3s; }
+.nav-link:hover::after { width:100%; left:0; }
+.hero-grid { background-image: radial-gradient(circle, rgba(198,40,40,0.04) 1px, transparent 1px); background-size: 32px 32px; }
+.step-connector { position:relative; }
+.step-connector::after { content:''; position:absolute; top:50%; right:-50%; width:100%; height:2px; background:linear-gradient(90deg,#C62828,transparent); }
+@media(max-width:768px){ .step-connector::after { display:none; } }
 </style>
   <style>body { box-sizing: border-box; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  </head>
- <body class="h-full bg-white font-sans text-noir overflow-auto">
-  <div id="app" class="w-full"><!-- Announcement Bar -->
-   <div id="announcement-bar" class="bg-noir py-2 px-4 text-center">
-    <p id="announcement-text" class="text-gold text-xs tracking-[0.3em] uppercase font-sans font-light">Luxury Clutch Collection – Shop Now</p>
-   </div><!-- Navbar -->
-   <nav id="navbar" class="nav-sticky sticky top-0 z-50 bg-white border-b border-gray-100">
-    <div class="flex items-center justify-between px-5 md:px-10 py-4">
-     <div class="flex items-center gap-5"><button class="wishlist-btn"><i data-lucide="menu" class="w-5 h-5"></i></button> <button class="wishlist-btn"><i data-lucide="search" class="w-5 h-5"></i></button>
+ <body class="h-full bg-surface font-sans text-gray-800">
+  <div class="scroll-wrap" id="app-root"><!-- Navbar -->
+   <nav class="fixed top-0 left-0 w-full z-50 glass border-b border-gray-100/60" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex items-center justify-between h-16"><a href="#" class="flex items-center gap-2">
+       <div class="w-9 h-9 rounded-lg bg-brand flex items-center justify-center"><span class="text-white font-serif font-bold text-sm">IJ</span>
+       </div><span class="font-serif font-bold text-xl tracking-tight text-gray-900">IJIRT</span> </a>
+      <div class="hidden lg:flex items-center gap-7 text-sm font-medium text-gray-600"><a href="#home" class="nav-link hover:text-brand transition">Home</a> <a href="#about" class="nav-link hover:text-brand transition">About</a> <a href="#features" class="nav-link hover:text-brand transition">Features</a> <a href="#how" class="nav-link hover:text-brand transition">How It Works</a> <a href="#guidance" class="nav-link hover:text-brand transition">Guidance</a> <a href="#journals" class="nav-link hover:text-brand transition">Journals</a> <a href="#pricing" class="nav-link hover:text-brand transition">Pricing</a> <a href="#papers" class="nav-link hover:text-brand transition">Papers</a> <a href="#contact" class="nav-link hover:text-brand transition">Contact</a>
+      </div>
+      <div class="hidden lg:flex items-center gap-3"><button class="text-sm font-medium text-gray-600 hover:text-brand transition px-3 py-1.5">Login</button> <button class="text-sm font-semibold bg-brand text-white px-4 py-2 rounded-lg hover:bg-brand-dark transition">Register</button>
+      </div><button class="lg:hidden p-2 text-gray-700" id="mobile-toggle" aria-label="Menu"> <i data-lucide="menu" class="w-6 h-6"></i> </button>
      </div>
-     <div class="text-center">
-      <h1 id="brand-name" class="font-serif text-xl md:text-2xl tracking-[0.35em] font-semibold uppercase">BATVA FASHION</h1>
-     </div>
-     <div class="flex items-center gap-5"><button class="wishlist-btn"><i data-lucide="heart" class="w-5 h-5"></i></button> <button class="wishlist-btn"><i data-lucide="user" class="w-5 h-5"></i></button>
-     </div>
-    </div>
-   </nav><!-- Category Scroll -->
-   <div class="scroll-hide overflow-x-auto border-b border-gray-100">
-    <div class="flex items-center gap-8 px-6 py-4 min-w-max mx-auto justify-center"><a href="#" class="flex flex-col items-center gap-1.5 group">
-      <div class="w-12 h-12 rounded-full bg-ivory flex items-center justify-center group-hover:bg-gold/10 transition-colors">
-       <span class="text-lg">👝</span>
-      </div><span class="text-[10px] tracking-[0.2em] uppercase font-light">Clutches</span> </a> <a href="#" class="flex flex-col items-center gap-1.5 group">
-      <div class="w-12 h-12 rounded-full bg-ivory flex items-center justify-center group-hover:bg-gold/10 transition-colors">
-       <span class="text-lg">💍</span>
-      </div><span class="text-[10px] tracking-[0.2em] uppercase font-light">Bridal</span> </a> <a href="#" class="flex flex-col items-center gap-1.5 group">
-      <div class="w-12 h-12 rounded-full bg-ivory flex items-center justify-center group-hover:bg-gold/10 transition-colors">
-       <span class="text-lg">✨</span>
-      </div><span class="text-[10px] tracking-[0.2em] uppercase font-light">Party Wear</span> </a> <a href="#" class="flex flex-col items-center gap-1.5 group">
-      <div class="w-12 h-12 rounded-full bg-ivory flex items-center justify-center group-hover:bg-gold/10 transition-colors">
-       <span class="text-lg">🪡</span>
-      </div><span class="text-[10px] tracking-[0.2em] uppercase font-light">Embroidered</span> </a> <a href="#" class="flex flex-col items-center gap-1.5 group">
-      <div class="w-12 h-12 rounded-full bg-ivory flex items-center justify-center group-hover:bg-gold/10 transition-colors">
-       <span class="text-lg">👑</span>
-      </div><span class="text-[10px] tracking-[0.2em] uppercase font-light">Premium</span> </a>
-    </div>
-   </div><!-- Hero Section -->
-   <section class="relative w-full overflow-hidden" style="height: 85%;">
-    <div class="absolute inset-0 bg-noir">
-     <div class="absolute inset-0" style="background: linear-gradient(135deg, #1a1510 0%, #0a0a0a 40%, #12100d 100%);"></div>
-     <div class="absolute inset-0 opacity-20" style="background: radial-gradient(ellipse at 30% 50%, #D4AF3722 0%, transparent 70%);"></div><!-- Decorative geometric pattern -->
-     <svg class="absolute right-0 top-0 w-1/2 h-full opacity-[0.03]" viewbox="0 0 400 600" fill="none"><pattern id="lux" width="40" height="40" patternunits="userSpaceOnUse">
-       <path d="M20 0L40 20L20 40L0 20Z" stroke="#D4AF37" stroke-width="0.5" fill="none" />
-      </pattern> <rect width="400" height="600" fill="url(#lux)" />
-     </svg>
-    </div>
-    <div class="relative h-full flex items-center px-8 md:px-20">
-     <div class="max-w-lg fade-in">
-      <p class="text-gold/70 text-xs tracking-[0.4em] uppercase mb-4 font-sans font-light">New Arrival 2025</p>
-      <h2 id="hero-title" class="font-serif text-5xl md:text-7xl text-white font-light leading-[1.1] mb-6">Luxury<br>
-       Clutches</h2>
-      <p id="hero-subtitle" class="text-white/50 font-light text-sm md:text-base leading-relaxed mb-10 max-w-sm">Handcrafted elegance for the modern woman. Each piece tells a story of timeless Indian artistry.</p><a href="#" class="gold-btn inline-block border border-gold text-gold px-10 py-3.5 text-xs tracking-[0.3em] uppercase font-sans font-light">Explore Collection</a>
-     </div>
-    </div>
-    <div class="absolute bottom-8 right-8 md:right-20 text-right">
-     <p class="text-white/20 text-[10px] tracking-[0.3em] uppercase">Scroll to discover</p>
-     <div class="w-px h-12 bg-gold/30 mx-auto mt-2"></div>
-    </div>
-   </section><!-- Section Title Component -->
-   <section class="py-20 px-6 md:px-16 fade-in">
-    <div class="text-center mb-14">
-     <p class="text-gold text-[10px] tracking-[0.5em] uppercase mb-3">Curated Selection</p>
-     <h3 class="font-serif text-3xl md:text-4xl font-light">Signature Clutches</h3>
-     <div class="w-12 h-px bg-gold mx-auto mt-5"></div>
-    </div><!-- Product Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto" id="product-grid-1"></div>
-    <div class="text-center mt-14"><a href="#" class="gold-btn inline-block border border-gold text-gold px-12 py-3.5 text-xs tracking-[0.3em] uppercase rounded-full font-light">View More</a>
-    </div>
-   </section><!-- Category Banner - Bridal -->
-   <section class="relative w-full overflow-hidden banner-wrap fade-in" style="height: 60%;">
-    <div class="banner-img absolute inset-0" style="background: linear-gradient(160deg, #1e1914 0%, #0a0a0a 50%, #1a150e 100%);"></div>
-    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 70% 40%, #D4AF3715 0%, transparent 60%);"></div>
-    <div class="relative h-full flex items-center justify-end px-8 md:px-20">
-     <div class="text-right max-w-md">
-      <p class="text-gold/60 text-[10px] tracking-[0.5em] uppercase mb-3">Editorial</p>
-      <h3 class="font-serif text-4xl md:text-6xl text-white font-light mb-4">Bridal<br>
-       Collection</h3>
-      <p class="text-white/40 text-sm font-light mb-8">Where heritage meets haute couture</p><a href="#" class="gold-btn inline-block border border-gold/50 text-gold px-10 py-3 text-xs tracking-[0.3em] uppercase font-light">Discover</a>
-     </div>
-    </div>
-   </section><!-- Bridal Products -->
-   <section class="py-20 px-6 md:px-16 fade-in">
-    <div class="text-center mb-14">
-     <p class="text-gold text-[10px] tracking-[0.5em] uppercase mb-3">Bridal Edit</p>
-     <h3 class="font-serif text-3xl md:text-4xl font-light">For The Bride</h3>
-     <div class="w-12 h-px bg-gold mx-auto mt-5"></div>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto" id="product-grid-2"></div>
-    <div class="text-center mt-14"><a href="#" class="gold-btn inline-block border border-gold text-gold px-12 py-3.5 text-xs tracking-[0.3em] uppercase rounded-full font-light">View More</a>
-    </div>
-   </section><!-- Party Banner -->
-   <section class="relative w-full overflow-hidden banner-wrap fade-in" style="height: 50%;">
-    <div class="banner-img absolute inset-0" style="background: linear-gradient(200deg, #14110d 0%, #0a0a0a 60%, #1a1510 100%);"></div>
-    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 20% 60%, #D4AF3712 0%, transparent 50%);"></div>
-    <div class="relative h-full flex items-center px-8 md:px-20">
-     <div class="max-w-md">
-      <p class="text-gold/60 text-[10px] tracking-[0.5em] uppercase mb-3">After Dark</p>
-      <h3 class="font-serif text-4xl md:text-5xl text-white font-light mb-4">Party Wear</h3>
-      <p class="text-white/40 text-sm font-light mb-8">Make every entrance unforgettable</p><a href="#" class="gold-btn inline-block border border-gold/50 text-gold px-10 py-3 text-xs tracking-[0.3em] uppercase font-light">Shop Now</a>
-     </div>
-    </div>
-   </section><!-- Horizontal Carousel -->
-   <section class="py-20 fade-in">
-    <div class="text-center mb-14 px-6">
-     <p class="text-gold text-[10px] tracking-[0.5em] uppercase mb-3">Trending Now</p>
-     <h3 class="font-serif text-3xl md:text-4xl font-light">Party Essentials</h3>
-     <div class="w-12 h-px bg-gold mx-auto mt-5"></div>
-    </div>
-    <div class="scroll-hide overflow-x-auto px-6 md:px-16">
-     <div class="flex gap-5 min-w-max" id="carousel-1"></div>
-    </div>
-   </section><!-- Lifestyle Section -->
-   <section class="py-16 px-6 md:px-16 fade-in">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-6xl mx-auto">
-     <div class="relative overflow-hidden group" style="height: 400px;">
-      <div class="absolute inset-0 bg-gradient-to-br from-noir via-warmGray to-noir"></div>
-      <div class="absolute inset-0 opacity-10" style="background: radial-gradient(circle at 50% 50%, #D4AF37 0%, transparent 70%);"></div>
-      <div class="absolute bottom-8 left-8">
-       <p class="text-gold/50 text-[10px] tracking-[0.4em] uppercase mb-2">The Art of</p>
-       <h4 class="font-serif text-3xl text-white font-light">Craftsmanship</h4>
+    </div><!-- Mobile menu -->
+    <div class="lg:hidden hidden border-t border-gray-100" id="mobile-menu">
+     <div class="px-4 py-4 flex flex-col gap-3 text-sm font-medium text-gray-600"><a href="#home" class="mob-link py-1">Home</a><a href="#about" class="mob-link py-1">About</a> <a href="#features" class="mob-link py-1">Features</a><a href="#how" class="mob-link py-1">How It Works</a> <a href="#guidance" class="mob-link py-1">Guidance</a><a href="#journals" class="mob-link py-1">Journals</a> <a href="#pricing" class="mob-link py-1">Pricing</a><a href="#papers" class="mob-link py-1">Papers</a> <a href="#contact" class="mob-link py-1">Contact</a>
+      <div class="flex gap-2 pt-2 border-t border-gray-100"><button class="flex-1 text-sm py-2 rounded-lg border border-gray-200">Login</button> <button class="flex-1 text-sm py-2 rounded-lg bg-brand text-white">Register</button>
       </div>
      </div>
-     <div class="grid grid-rows-2 gap-4">
-      <div class="relative overflow-hidden group" style="height: 194px;">
-       <div class="absolute inset-0" style="background: linear-gradient(45deg, #1a1510, #0f0d0a);"></div>
-       <div class="absolute bottom-6 left-6">
-        <p class="text-gold/50 text-[10px] tracking-[0.4em] uppercase mb-1">Heritage</p>
-        <h4 class="font-serif text-xl text-white font-light">Indian Artistry</h4>
+    </div>
+   </nav><!-- Hero -->
+   <section id="home" class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 hero-grid overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-white via-surface to-red-50/40"></div>
+    <div class="absolute top-20 right-10 w-72 h-72 bg-brand/5 rounded-full blur-3xl anim-float"></div>
+    <div class="absolute bottom-10 left-10 w-56 h-56 bg-brand/3 rounded-full blur-3xl" style="animation:float 7s 1s ease-in-out infinite"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/8 text-brand text-xs font-semibold mb-6 anim-up"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Fast-Track Publication
+       </div>
+       <h1 id="hero-heading" class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight anim-up-d1">Publish Your Research<br><span class="text-brand">in 2 Days</span></h1>
+       <p id="hero-subheading" class="mt-5 text-lg text-gray-500 max-w-lg leading-relaxed anim-up-d2">International Journal with Expert Guidance — trusted by researchers and institutions across 40+ countries.</p>
+       <div class="flex flex-wrap gap-3 mt-8 anim-up-d3"><a href="#pricing" class="inline-flex items-center gap-2 bg-brand text-white font-semibold px-7 py-3.5 rounded-xl hover:bg-brand-dark transition shadow-lg shadow-brand/20"> <i data-lucide="send" class="w-4 h-4"></i> Submit Paper </a> <a href="#guidance" class="inline-flex items-center gap-2 border-2 border-gray-200 text-gray-700 font-semibold px-7 py-3.5 rounded-xl hover:border-brand hover:text-brand transition"> <i data-lucide="book-open" class="w-4 h-4"></i> Get Guidance </a>
+       </div>
+       <div class="flex items-center gap-6 mt-10 text-sm text-gray-400 anim-up-d4"><span class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i> ISSN Indexed</span> <span class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i> Peer Reviewed</span> <span class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i> DOI Assigned</span>
        </div>
       </div>
-      <div class="relative overflow-hidden group" style="height: 194px;">
-       <div class="absolute inset-0" style="background: linear-gradient(135deg, #14110d, #0a0a0a);"></div>
-       <div class="absolute bottom-6 left-6">
-        <p class="text-gold/50 text-[10px] tracking-[0.4em] uppercase mb-1">Luxury</p>
-        <h4 class="font-serif text-xl text-white font-light">Beyond Borders</h4>
+      <div class="hidden lg:block">
+       <div class="glass rounded-3xl p-8 shadow-2xl shadow-brand/5 anim-up-d2">
+        <div class="flex items-center gap-3 mb-6">
+         <div class="w-3 h-3 rounded-full bg-red-400"></div>
+         <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+         <div class="w-3 h-3 rounded-full bg-green-400"></div>
+        </div>
+        <div class="space-y-4">
+         <div class="flex items-center gap-3 p-3 rounded-xl bg-green-50 border border-green-100"><i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i> <span class="text-sm font-medium text-green-800">Paper Submitted Successfully</span>
+         </div>
+         <div class="flex items-center gap-3 p-3 rounded-xl bg-blue-50 border border-blue-100"><i data-lucide="search" class="w-5 h-5 text-blue-600"></i> <span class="text-sm font-medium text-blue-800">Peer Review In Progress</span>
+         </div>
+         <div class="flex items-center gap-3 p-3 rounded-xl bg-brand/5 border border-brand/10"><i data-lucide="award" class="w-5 h-5 text-brand"></i> <span class="text-sm font-medium text-brand-dark">Published &amp; DOI Assigned</span>
+         </div>
+         <div class="grid grid-cols-3 gap-3 pt-2">
+          <div class="text-center p-3 rounded-xl bg-surface">
+           <div class="text-2xl font-bold text-brand font-serif">
+            2
+           </div>
+           <div class="text-xs text-gray-400 mt-0.5">
+            Days
+           </div>
+          </div>
+          <div class="text-center p-3 rounded-xl bg-surface">
+           <div class="text-2xl font-bold text-gray-800 font-serif">
+            12K+
+           </div>
+           <div class="text-xs text-gray-400 mt-0.5">
+            Papers
+           </div>
+          </div>
+          <div class="text-center p-3 rounded-xl bg-surface">
+           <div class="text-2xl font-bold text-gray-800 font-serif">
+            40+
+           </div>
+           <div class="text-xs text-gray-400 mt-0.5">
+            Countries
+           </div>
+          </div>
+         </div>
+        </div>
        </div>
       </div>
      </div>
     </div>
-   </section><!-- Premium Collection -->
-   <section class="py-20 px-6 md:px-16 bg-ivory fade-in">
-    <div class="text-center mb-14">
-     <p class="shimmer-gold text-[10px] tracking-[0.5em] uppercase mb-3 font-sans">Exclusive</p>
-     <h3 class="font-serif text-3xl md:text-4xl font-light">Premium Collection</h3>
-     <div class="w-12 h-px bg-gold mx-auto mt-5"></div>
+   </section><!-- About -->
+   <section id="about" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="max-w-3xl mx-auto text-center mb-14"><span class="text-brand font-semibold text-sm uppercase tracking-wider">About IJIRT</span>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-3">A Trusted Platform for<br>
+       Global Research Publication</h2>
+      <p class="mt-4 text-gray-500 leading-relaxed">IJIRT provides a credible, fast, and affordable publishing platform for researchers, students, and academics worldwide. Our rigorous yet efficient review process ensures quality while maintaining the fastest turnaround times in the industry.</p>
+     </div>
+     <div class="grid sm:grid-cols-3 gap-6">
+      <div class="glass-dark rounded-2xl p-7 card-hover text-center">
+       <div class="w-14 h-14 mx-auto rounded-2xl bg-brand/8 flex items-center justify-center mb-4">
+        <i data-lucide="globe" class="w-6 h-6 text-brand"></i>
+       </div>
+       <h3 class="font-serif font-bold text-lg text-gray-900">Global Credibility</h3>
+       <p class="text-sm text-gray-500 mt-2 leading-relaxed">Indexed internationally with ISSN, DOI, and recognized by institutions in 40+ countries.</p>
+      </div>
+      <div class="glass-dark rounded-2xl p-7 card-hover text-center">
+       <div class="w-14 h-14 mx-auto rounded-2xl bg-brand/8 flex items-center justify-center mb-4">
+        <i data-lucide="rocket" class="w-6 h-6 text-brand"></i>
+       </div>
+       <h3 class="font-serif font-bold text-lg text-gray-900">Fast Publishing</h3>
+       <p class="text-sm text-gray-500 mt-2 leading-relaxed">Get your research published within 48 hours with our streamlined review and approval process.</p>
+      </div>
+      <div class="glass-dark rounded-2xl p-7 card-hover text-center">
+       <div class="w-14 h-14 mx-auto rounded-2xl bg-brand/8 flex items-center justify-center mb-4">
+        <i data-lucide="wallet" class="w-6 h-6 text-brand"></i>
+       </div>
+       <h3 class="font-serif font-bold text-lg text-gray-900">Affordable Fees</h3>
+       <p class="text-sm text-gray-500 mt-2 leading-relaxed">Student-friendly pricing with no hidden charges. Quality research publishing accessible to everyone.</p>
+      </div>
+     </div>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto" id="product-grid-3"></div>
-    <div class="text-center mt-14"><a href="#" class="gold-btn inline-block border border-gold text-gold px-12 py-3.5 text-xs tracking-[0.3em] uppercase rounded-full font-light">View More</a>
+   </section><!-- Features -->
+   <section id="features" class="py-20 bg-surface">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="max-w-3xl mx-auto text-center mb-14"><span class="text-brand font-semibold text-sm uppercase tracking-wider">Features</span>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Everything You Need to Publish</h2>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="bg-white rounded-2xl p-6 card-hover border border-gray-100">
+       <div class="w-11 h-11 rounded-xl bg-brand/8 flex items-center justify-center mb-4">
+        <i data-lucide="cpu" class="w-5 h-5 text-brand"></i>
+       </div>
+       <h3 class="font-semibold text-gray-900">AI Writing Assistance</h3>
+       <p class="text-sm text-gray-500 mt-2">Smart suggestions to improve clarity, grammar, and academic tone of your manuscript.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 card-hover border border-gray-100">
+       <div class="w-11 h-11 rounded-xl bg-brand/8 flex items-center justify-center mb-4">
+        <i data-lucide="shield-check" class="w-5 h-5 text-brand"></i>
+       </div>
+       <h3 class="font-semibold text-gray-900">Plagiarism Check</h3>
+       <p class="text-sm text-gray-500 mt-2">Advanced plagiarism detection ensures originality and compliance with academic standards.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 card-hover border border-gray-100">
+       <div class="w-11 h-11 rounded-xl bg-brand/8 flex items-center justify-center mb-4">
+        <i data-lucide="file-text" class="w-5 h-5 text-brand"></i>
+       </div>
+       <h3 class="font-semibold text-gray-900">Formatting Help</h3>
+       <p class="text-sm text-gray-500 mt-2">Auto-format your paper to meet IEEE/journal standards with our built-in templates.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 card-hover border border-gray-100">
+       <div class="w-11 h-11 rounded-xl bg-brand/8 flex items-center justify-center mb-4">
+        <i data-lucide="users" class="w-5 h-5 text-brand"></i>
+       </div>
+       <h3 class="font-semibold text-gray-900">Expert Review</h3>
+       <p class="text-sm text-gray-500 mt-2">Reviewed by subject-matter experts with constructive feedback to strengthen your work.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 card-hover border border-gray-100">
+       <div class="w-11 h-11 rounded-xl bg-brand/8 flex items-center justify-center mb-4">
+        <i data-lucide="timer" class="w-5 h-5 text-brand"></i>
+       </div>
+       <h3 class="font-semibold text-gray-900">2-Day Publication</h3>
+       <p class="text-sm text-gray-500 mt-2">Industry-leading turnaround time from submission to full online publication.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 card-hover border border-gray-100">
+       <div class="w-11 h-11 rounded-xl bg-brand/8 flex items-center justify-center mb-4">
+        <i data-lucide="badge-check" class="w-5 h-5 text-brand"></i>
+       </div>
+       <h3 class="font-semibold text-gray-900">Certificate &amp; DOI</h3>
+       <p class="text-sm text-gray-500 mt-2">Receive an official publication certificate and unique DOI for every accepted paper.</p>
+      </div>
+     </div>
     </div>
-   </section><!-- Newsletter -->
-   <section class="py-20 px-6 bg-noir text-center fade-in">
-    <p class="text-gold/50 text-[10px] tracking-[0.5em] uppercase mb-3">Stay Connected</p>
-    <h3 class="font-serif text-3xl text-white font-light mb-3">Join The Circle</h3>
-    <p class="text-white/30 text-sm font-light mb-8 max-w-sm mx-auto">Be the first to know about new collections and exclusive offers.</p>
-    <form class="flex max-w-md mx-auto" onsubmit="event.preventDefault(); this.querySelector('input').value=''; this.querySelector('button').textContent='Subscribed ✓'; setTimeout(() => this.querySelector('button').textContent='Subscribe', 2000);"><input type="email" placeholder="Your email" class="flex-1 bg-transparent border border-white/10 px-5 py-3 text-white text-sm font-light focus:outline-none focus:border-gold/50 placeholder:text-white/20"> <button type="submit" class="bg-gold text-noir px-6 py-3 text-xs tracking-[0.2em] uppercase font-medium hover:bg-goldLight transition-colors">Subscribe</button>
-    </form>
+   </section><!-- How It Works -->
+   <section id="how" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-14"><span class="text-brand font-semibold text-sm uppercase tracking-wider">Process</span>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-3">How It Works</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8">
+      <div class="text-center step-connector">
+       <div class="w-20 h-20 mx-auto rounded-full bg-brand flex items-center justify-center shadow-lg shadow-brand/20 mb-5"><i data-lucide="upload" class="w-8 h-8 text-white"></i>
+       </div>
+       <div class="text-xs font-bold text-brand uppercase tracking-widest mb-2">
+        Step 1
+       </div>
+       <h3 class="font-serif text-xl font-bold text-gray-900">Submit Your Paper</h3>
+       <p class="text-sm text-gray-500 mt-2">Upload your manuscript through our secure submission portal with all required details.</p>
+      </div>
+      <div class="text-center step-connector">
+       <div class="w-20 h-20 mx-auto rounded-full bg-brand flex items-center justify-center shadow-lg shadow-brand/20 mb-5"><i data-lucide="search" class="w-8 h-8 text-white"></i>
+       </div>
+       <div class="text-xs font-bold text-brand uppercase tracking-widest mb-2">
+        Step 2
+       </div>
+       <h3 class="font-serif text-xl font-bold text-gray-900">Expert Review</h3>
+       <p class="text-sm text-gray-500 mt-2">Our editorial team and peer reviewers evaluate your paper for quality and originality.</p>
+      </div>
+      <div class="text-center">
+       <div class="w-20 h-20 mx-auto rounded-full bg-brand flex items-center justify-center shadow-lg shadow-brand/20 mb-5"><i data-lucide="award" class="w-8 h-8 text-white"></i>
+       </div>
+       <div class="text-xs font-bold text-brand uppercase tracking-widest mb-2">
+        Step 3
+       </div>
+       <h3 class="font-serif text-xl font-bold text-gray-900">Get Published</h3>
+       <p class="text-sm text-gray-500 mt-2">Your paper goes live with DOI, certificate, and global indexing within 48 hours.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Guidance -->
+   <section id="guidance" class="py-20 bg-gradient-to-br from-gray-900 via-gray-900 to-brand-dark text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div><span class="text-brand-light font-semibold text-sm uppercase tracking-wider">Expert Guidance</span>
+       <h2 class="font-serif text-3xl sm:text-4xl font-bold mt-3 leading-tight">New to Research?<br>
+        We'll Guide You.</h2>
+       <p class="mt-4 text-gray-400 leading-relaxed">Our paid mentorship program pairs you with experienced researchers who guide you through every step — from topic selection to final publication.</p>
+       <ul class="mt-6 space-y-3">
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-brand-light flex-shrink-0"></i> One-on-one mentorship sessions</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-brand-light flex-shrink-0"></i> Help with topic selection &amp; literature review</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-brand-light flex-shrink-0"></i> Manuscript structuring &amp; writing support</li>
+        <li class="flex items-center gap-3 text-sm text-gray-300"><i data-lucide="check" class="w-4 h-4 text-brand-light flex-shrink-0"></i> Revision assistance until acceptance</li>
+       </ul><a href="#pricing" class="inline-flex items-center gap-2 mt-8 bg-brand text-white font-semibold px-7 py-3.5 rounded-xl hover:bg-brand-light transition"> <i data-lucide="sparkles" class="w-4 h-4"></i> Explore Guidance Plans </a>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+       <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
+        <div class="text-3xl font-serif font-bold text-brand-light">
+         500+
+        </div>
+        <div class="text-sm text-gray-400 mt-1">
+         Students Guided
+        </div>
+       </div>
+       <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
+        <div class="text-3xl font-serif font-bold text-brand-light">
+         98%
+        </div>
+        <div class="text-sm text-gray-400 mt-1">
+         Acceptance Rate
+        </div>
+       </div>
+       <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
+        <div class="text-3xl font-serif font-bold text-brand-light">
+         50+
+        </div>
+        <div class="text-sm text-gray-400 mt-1">
+         Expert Mentors
+        </div>
+       </div>
+       <div class="bg-white/5 rounded-2xl p-6 border border-white/10">
+        <div class="text-3xl font-serif font-bold text-brand-light">
+         4.9★
+        </div>
+        <div class="text-sm text-gray-400 mt-1">
+         Average Rating
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Journal Categories -->
+   <section id="journals" class="py-20 bg-surface">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-14"><span class="text-brand font-semibold text-sm uppercase tracking-wider">Disciplines</span>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Journal Categories</h2>
+     </div>
+     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" id="categories">
+     </div>
+    </div>
+   </section><!-- Pricing -->
+   <section id="pricing" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-14"><span class="text-brand font-semibold text-sm uppercase tracking-wider">Plans</span>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Simple, Transparent Pricing</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto"><!-- Basic -->
+      <div class="bg-surface rounded-2xl p-7 border border-gray-100 card-hover">
+       <div class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+        Basic
+       </div>
+       <div class="mt-3">
+        <span class="text-4xl font-serif font-bold text-gray-900">₹1,500</span><span class="text-sm text-gray-400 ml-1">/paper</span>
+       </div>
+       <ul class="mt-6 space-y-3 text-sm text-gray-600">
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Peer Review</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Online Publication</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> DOI Assignment</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Certificate</li>
+        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="x" class="w-4 h-4"></i> Formatting Help</li>
+        <li class="flex items-center gap-2 text-gray-300"><i data-lucide="x" class="w-4 h-4"></i> Mentorship</li>
+       </ul><button class="w-full mt-6 py-3 rounded-xl border-2 border-gray-200 font-semibold text-gray-700 hover:border-brand hover:text-brand transition">Choose Basic</button>
+      </div><!-- Fast Track -->
+      <div class="bg-brand rounded-2xl p-7 text-white card-hover relative shadow-xl shadow-brand/20">
+       <div class="absolute -top-3 right-6 bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1 rounded-full">
+        Popular
+       </div>
+       <div class="text-sm font-semibold text-brand-light uppercase tracking-wider">
+        Fast-Track
+       </div>
+       <div class="mt-3">
+        <span class="text-4xl font-serif font-bold">₹2,500</span><span class="text-sm text-white/70 ml-1">/paper</span>
+       </div>
+       <ul class="mt-6 space-y-3 text-sm text-white/90">
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-yellow-300"></i> Everything in Basic</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-yellow-300"></i> 2-Day Publication</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-yellow-300"></i> Formatting Help</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-yellow-300"></i> Plagiarism Report</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-yellow-300"></i> Priority Support</li>
+        <li class="flex items-center gap-2 text-white/40"><i data-lucide="x" class="w-4 h-4"></i> Mentorship</li>
+       </ul><button class="w-full mt-6 py-3 rounded-xl bg-white text-brand font-semibold hover:bg-gray-100 transition">Choose Fast-Track</button>
+      </div><!-- Guided -->
+      <div class="bg-surface rounded-2xl p-7 border border-gray-100 card-hover">
+       <div class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+        Guided
+       </div>
+       <div class="mt-3">
+        <span class="text-4xl font-serif font-bold text-gray-900">₹4,500</span><span class="text-sm text-gray-400 ml-1">/paper</span>
+       </div>
+       <ul class="mt-6 space-y-3 text-sm text-gray-600">
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Everything in Fast-Track</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> 1-on-1 Mentorship</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Topic Selection Help</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Writing Assistance</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Unlimited Revisions</li>
+        <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i> Guaranteed Acceptance</li>
+       </ul><button class="w-full mt-6 py-3 rounded-xl border-2 border-gray-200 font-semibold text-gray-700 hover:border-brand hover:text-brand transition">Choose Guided</button>
+      </div>
+     </div>
+    </div>
+   </section>
+   !-- Published Papers -->
+   <section id="papers" class="py-20 bg-surface">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-14"><span class="text-brand font-semibold text-sm uppercase tracking-wider">Library</span>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-3">Recently Published Papers</h2>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" id="papers-grid"></div>
+    </div>
+   </section><!-- Testimonials -->
+   <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-14"><span class="text-brand font-semibold text-sm uppercase tracking-wider">Testimonials</span>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mt-3">What Researchers Say</h2>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6" id="testimonials-grid"></div>
+    </div>
+   </section><!-- CTA -->
+   <section class="py-20 bg-gradient-to-r from-brand to-brand-dark text-white">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+     <h2 id="cta-heading" class="font-serif text-3xl sm:text-4xl font-bold">Start Publishing Today</h2>
+     <p class="mt-4 text-white/80 text-lg">Join thousands of researchers who trust IJIRT for fast, credible, and affordable publication.</p>
+     <div class="flex flex-wrap justify-center gap-4 mt-8"><a href="#pricing" class="inline-flex items-center gap-2 bg-white text-brand font-semibold px-8 py-4 rounded-xl hover:bg-gray-100 transition shadow-lg"> <i data-lucide="send" class="w-4 h-4"></i> Submit Your Paper </a> <a href="#guidance" class="inline-flex items-center gap-2 border-2 border-white/40 text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/10 transition"> <i data-lucide="message-circle" class="w-4 h-4"></i> Talk to an Expert </a>
+     </div>
+    </div>
    </section><!-- Footer -->
-   <footer class="bg-noir border-t border-white/5 pt-16 pb-8 px-6 md:px-16">
-    <div class="max-w-6xl mx-auto">
-     <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
+   <footer id="contact" class="bg-gray-900 text-gray-400 pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 pb-10 border-b border-gray-800">
       <div>
-       <h5 class="font-serif text-white text-lg mb-5">BATVA</h5>
-       <p class="text-white/30 text-xs leading-relaxed font-light">Redefining Indian luxury, one clutch at a time.</p>
+       <div class="flex items-center gap-2 mb-4">
+        <div class="w-9 h-9 rounded-lg bg-brand flex items-center justify-center">
+         <span class="text-white font-serif font-bold text-sm">IJ</span>
+        </div><span class="font-serif font-bold text-xl text-white">IJIRT</span>
+       </div>
+       <p class="text-sm leading-relaxed">International Journal of Innovative Research and Technology by Shyntrix Infotech.</p>
+       <div class="flex gap-3 mt-4"><a href="#" class="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-brand transition"><i data-lucide="twitter" class="w-4 h-4 text-gray-400"></i></a> <a href="#" class="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-brand transition"><i data-lucide="linkedin" class="w-4 h-4 text-gray-400"></i></a> <a href="#" class="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-brand transition"><i data-lucide="facebook" class="w-4 h-4 text-gray-400"></i></a> <a href="#" class="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-brand transition"><i data-lucide="instagram" class="w-4 h-4 text-gray-400"></i></a>
+       </div>
       </div>
       <div>
-       <p class="text-gold/60 text-[10px] tracking-[0.3em] uppercase mb-4">Shop</p>
-       <ul class="space-y-2.5">
-        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Clutches</a></li>
-        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Bridal</a></li>
-        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Party Wear</a></li>
-        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Premium</a></li>
+       <h4 class="font-semibold text-white mb-4">Quick Links</h4>
+       <ul class="space-y-2 text-sm">
+        <li><a href="#home" class="hover:text-brand transition">Home</a></li>
+        <li><a href="#about" class="hover:text-brand transition">About</a></li>
+        <li><a href="#pricing" class="hover:text-brand transition">Submit Paper</a></li>
+        <li><a href="#guidance" class="hover:text-brand transition">Guidance</a></li>
+        <li><a href="#journals" class="hover:text-brand transition">Journals</a></li>
        </ul>
       </div>
       <div>
-       <p class="text-gold/60 text-[10px] tracking-[0.3em] uppercase mb-4">About</p>
-       <ul class="space-y-2.5">
-        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Our Story</a></li>
-        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Craftsmanship</a></li>
-        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Sustainability</a></li>
+       <h4 class="font-semibold text-white mb-4">Resources</h4>
+       <ul class="space-y-2 text-sm">
+        <li><a href="#" class="hover:text-brand transition">Author Guidelines</a></li>
+        <li><a href="#" class="hover:text-brand transition">Publication Ethics</a></li>
+        <li><a href="#" class="hover:text-brand transition">FAQs</a></li>
+        <li><a href="#" class="hover:text-brand transition">Privacy Policy</a></li>
+        <li><a href="#" class="hover:text-brand transition">Terms of Service</a></li>
        </ul>
       </div>
       <div>
-       <p class="text-gold/60 text-[10px] tracking-[0.3em] uppercase mb-4">Help</p>
-       <ul class="space-y-2.5">
-        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Contact</a></li>
-        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Shipping</a></li>
-        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Returns</a></li>
-        <li><a href="#" class="text-white/40 text-xs font-light hover:text-gold transition-colors">Privacy Policy</a></li>
+       <h4 class="font-semibold text-white mb-4">Contact</h4>
+       <ul class="space-y-3 text-sm">
+        <li class="flex items-start gap-2"><i data-lucide="mail" class="w-4 h-4 mt-0.5 text-brand flex-shrink-0"></i> info@ijirt.org</li>
+        <li class="flex items-start gap-2"><i data-lucide="phone" class="w-4 h-4 mt-0.5 text-brand flex-shrink-0"></i> +91 98765 43210</li>
+        <li class="flex items-start gap-2"><i data-lucide="map-pin" class="w-4 h-4 mt-0.5 text-brand flex-shrink-0"></i> Shyntrix Infotech, India</li>
        </ul>
       </div>
      </div>
-     <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-      <p class="text-white/20 text-[10px] tracking-[0.2em] uppercase">© 2025 Batva Fashion. All Rights Reserved.</p>
-      <div class="flex gap-5"><a href="#" class="text-white/20 hover:text-gold transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a> <a href="#" class="text-white/20 hover:text-gold transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a> <a href="#" class="text-white/20 hover:text-gold transition-colors"><i data-lucide="twitter" class="w-4 h-4"></i></a>
-      </div>
+     <div class="flex flex-col sm:flex-row items-center justify-between pt-8 text-xs text-gray-500">
+      <p>© 2025 IJIRT by Shyntrix Infotech. All rights reserved.</p>
+      <p class="mt-2 sm:mt-0">Powered with ❤️ by <span class="text-brand font-semibold">Shyntrix Infotech</span></p>
      </div>
     </div>
    </footer>
   </div>
   <script>
-// Product data
-const products = {
-  signature: [
-    { name: 'Maharani Gold Clutch', price: '₹12,999', color: '#2a2218' },
-    { name: 'Noir Velvet Pouch', price: '₹8,499', color: '#1a1a1a' },
-    { name: 'Zari Embroidered Box', price: '₹15,999', color: '#1e1814' },
-    { name: 'Pearl Drop Minaudière', price: '₹18,499', color: '#1c1916' },
-  ],
-  bridal: [
-    { name: 'Bridal Heirloom Clutch', price: '₹24,999', color: '#211c14' },
-    { name: 'Rose Gold Potli', price: '₹19,999', color: '#1e1610' },
-    { name: 'Ivory Sequin Frame', price: '₹22,499', color: '#1a1812' },
-    { name: 'Ruby Silk Envelope', price: '₹16,999', color: '#1c1210' },
-  ],
-  party: [
-    { name: 'Midnight Shimmer', price: '₹9,999', color: '#12121a' },
-    { name: 'Champagne Tassel', price: '₹11,499', color: '#1a1814' },
-    { name: 'Obsidian Cube', price: '₹13,999', color: '#0e0e0e' },
-    { name: 'Gilded Chain Sling', price: '₹10,499', color: '#1a1610' },
-    { name: 'Crystal Frost', price: '₹14,999', color: '#141418' },
-    { name: 'Deco Fan Clutch', price: '₹12,499', color: '#181410' },
-  ],
-  premium: [
-    { name: 'Heritage Kundan Box', price: '₹34,999', color: '#1e1a12' },
-    { name: 'Diamond Lattice Frame', price: '₹42,999', color: '#161616' },
-    { name: 'Emperor\'s Silk Pouch', price: '₹28,999', color: '#1a1410' },
-    { name: 'Platinum Weave Clutch', price: '₹38,499', color: '#141416' },
-  ]
+// Data
+const categories = [
+  { icon: 'cpu', name: 'Artificial Intelligence' },
+  { icon: 'brain', name: 'Machine Learning' },
+  { icon: 'monitor', name: 'Computer Science' },
+  { icon: 'cog', name: 'Mechanical Eng.' },
+  { icon: 'zap', name: 'Electrical Eng.' },
+  { icon: 'building', name: 'Civil Engineering' },
+  { icon: 'flask-conical', name: 'Biotechnology' },
+  { icon: 'stethoscope', name: 'Medical Sciences' },
+  { icon: 'briefcase', name: 'Management' },
+  { icon: 'scale', name: 'Law & Policy' },
+  { icon: 'leaf', name: 'Environmental Sci.' },
+  { icon: 'bar-chart-3', name: 'Data Science' },
+];
+
+const papers = [
+  { title: 'Deep Learning Approaches for Medical Image Segmentation', author: 'Dr. Priya Sharma', cat: 'AI' },
+  { title: 'IoT-Based Smart Agriculture Monitoring System', author: 'Rajesh Kumar et al.', cat: 'Engineering' },
+  { title: 'Blockchain Security in Decentralized Finance', author: 'Ananya Gupta', cat: 'Computer Science' },
+  { title: 'NLP Techniques for Regional Language Processing', author: 'Dr. Mohammed Ali', cat: 'ML' },
+  { title: 'Renewable Energy Grid Integration Challenges', author: 'Sneha Patil et al.', cat: 'Electrical' },
+  { title: 'Sustainable Construction Materials: A Review', author: 'Vikram Singh', cat: 'Civil' },
+];
+
+const testimonials = [
+  { name: 'Aditi Verma', role: 'M.Tech Student, IIT Delhi', text: 'IJIRT made my first publication seamless. The guidance team helped me structure my paper perfectly. Published in just 2 days!' },
+  { name: 'Dr. Rahul Mehta', role: 'Asst. Professor, NIT Trichy', text: 'I have published 5 papers with IJIRT. The review process is thorough yet fast. Highly recommended for serious researchers.' },
+  { name: 'Sarah Chen', role: 'PhD Candidate, NUS Singapore', text: 'As an international researcher, the DOI and indexing credentials gave my work global visibility. Excellent platform.' },
+];
+
+// Render categories
+const catGrid = document.getElementById('categories');
+categories.forEach(c => {
+  catGrid.innerHTML += `<div class="bg-white rounded-2xl p-5 border border-gray-100 card-hover flex items-center gap-3">
+    <div class="w-10 h-10 rounded-xl bg-brand/8 flex items-center justify-center flex-shrink-0"><i data-lucide="${c.icon}" class="w-5 h-5 text-brand"></i></div>
+    <span class="font-medium text-sm text-gray-800">${c.name}</span>
+  </div>`;
+});
+
+// Render papers
+const papersGrid = document.getElementById('papers-grid');
+papers.forEach(p => {
+  papersGrid.innerHTML += `<div class="bg-white rounded-2xl p-6 border border-gray-100 card-hover">
+    <div class="inline-block px-2.5 py-0.5 rounded-full bg-brand/8 text-brand text-xs font-semibold mb-3">${p.cat}</div>
+    <h3 class="font-semibold text-gray-900 leading-snug">${p.title}</h3>
+    <p class="text-sm text-gray-400 mt-2">${p.author}</p>
+    <button class="flex items-center gap-1.5 mt-4 text-sm font-semibold text-brand hover:text-brand-dark transition">
+      <i data-lucide="download" class="w-4 h-4"></i> Download PDF
+    </button>
+  </div>`;
+});
+
+// Render testimonials
+const testGrid = document.getElementById('testimonials-grid');
+testimonials.forEach(t => {
+  testGrid.innerHTML += `<div class="bg-surface rounded-2xl p-7 border border-gray-100 card-hover">
+    <div class="flex gap-1 mb-4">${'★'.repeat(5).split('').map(() => '<span class="text-yellow-400">★</span>').join('')}</div>
+    <p class="text-sm text-gray-600 leading-relaxed italic">"${t.text}"</p>
+    <div class="mt-5 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center font-bold text-brand text-sm">${t.name[0]}</div>
+      <div><div class="font-semibold text-gray-900 text-sm">${t.name}</div><div class="text-xs text-gray-400">${t.role}</div></div>
+    </div>
+  </div>`;
+});
+
+// Mobile menu
+document.getElementById('mobile-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+document.querySelectorAll('.mob-link').forEach(l => l.addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.add('hidden');
+}));
+
+// Init icons
+lucide.createIcons();
+
+// Element SDK
+const defaultConfig = {
+  hero_heading: 'Publish Your Research in 2 Days',
+  hero_subheading: 'International Journal with Expert Guidance — trusted by researchers and institutions across 40+ countries.',
+  cta_text: 'Start Publishing Today',
+  background_color: '#F8F7F5',
+  surface_color: '#FFFFFF',
+  text_color: '#1F2937',
+  primary_action_color: '#C62828',
+  secondary_action_color: '#6B7280',
+  font_family: 'Source Serif 4',
+  font_size: 16,
 };
 
-function createProductCard(p, size = 'normal') {
-  const w = size === 'carousel' ? 'w-56' : 'w-full';
-  const h = size === 'carousel' ? 'h-64' : 'h-52 md:h-72';
-  return `
-    <div class="product-card group ${w} flex-shrink-0">
-      <div class="relative overflow-hidden ${h} mb-3">
-        <div class="product-img absolute inset-0" style="background: linear-gradient(145deg, ${p.color}, #0a0a0a);"></div>
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="background: radial-gradient(circle at 50% 40%, #D4AF3710 0%, transparent 60%);"></div>
-        <button class="wishlist-btn absolute top-3 right-3 text-white/30 hover:text-gold z-10">
-          <i data-lucide="heart" class="w-4 h-4"></i>
-        </button>
-        <div class="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <span class="text-[9px] text-gold/50 tracking-[0.3em] uppercase">Quick View</span>
-        </div>
-      </div>
-      <h4 class="font-serif text-sm md:text-base font-light tracking-wide">${p.name}</h4>
-      <p class="text-xs text-noir/50 mt-1 font-light">${p.price}</p>
-    </div>`;
+function applyConfig(config) {
+  const h = document.getElementById('hero-heading');
+  if (h) h.innerHTML = (config.hero_heading || defaultConfig.hero_heading).replace(/in 2 Days/i, '<br><span class="text-brand">in 2 Days</span>');
+  const s = document.getElementById('hero-subheading');
+  if (s) s.textContent = config.hero_subheading || defaultConfig.hero_subheading;
+  const c = document.getElementById('cta-heading');
+  if (c) c.textContent = config.cta_text || defaultConfig.cta_text;
+
+  // Colors
+  const bg = config.background_color || defaultConfig.background_color;
+  const sf = config.surface_color || defaultConfig.surface_color;
+  const tx = config.text_color || defaultConfig.text_color;
+  const pa = config.primary_action_color || defaultConfig.primary_action_color;
+  const sa = config.secondary_action_color || defaultConfig.secondary_action_color;
+  document.documentElement.style.setProperty('--bg', bg);
+  document.body.style.backgroundColor = bg;
+  document.body.style.color = tx;
+
+  // Font
+  const ff = config.font_family || defaultConfig.font_family;
+  const fs = config.font_size || defaultConfig.font_size;
+  document.querySelectorAll('.font-serif').forEach(el => el.style.fontFamily = `${ff}, Georgia, serif`);
+  document.body.style.fontSize = `${fs}px`;
+  document.querySelectorAll('h1').forEach(el => el.style.fontSize = `${fs * 3}px`);
+  document.querySelectorAll('h2').forEach(el => el.style.fontSize = `${fs * 2}px`);
 }
 
-function renderProducts() {
-  document.getElementById('product-grid-1').innerHTML = products.signature.map(p => createProductCard(p)).join('');
-  document.getElementById('product-grid-2').innerHTML = products.bridal.map(p => createProductCard(p)).join('');
-  document.getElementById('carousel-1').innerHTML = products.party.map(p => createProductCard(p, 'carousel')).join('');
-  document.ge
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: v => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: v => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    },
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_heading', config.hero_heading || defaultConfig.hero_heading],
+    ['hero_subheading', config.hero_subheading || defaultConfig.hero_subheading],
+    ['cta_text', config.cta_text || defaultConfig.cta_text],
+  ]),
+});
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e7a23f9677047e9',t:'MTc3NTQwODc1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
